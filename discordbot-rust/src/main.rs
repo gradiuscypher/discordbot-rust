@@ -18,7 +18,7 @@ async fn main() {
         .route("/interact", post(handle_interaction))
         .into_make_service();
 
-    let addr = std::net::SocketAddr::from(([0, 0, 0, 0], 80));
+    let addr = std::net::SocketAddr::from(([0, 0, 0, 0], 8080));
     eprintln!("serving on {addr}");
     Server::bind(&addr).serve(app).await.unwrap();
 }

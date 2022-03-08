@@ -1,10 +1,13 @@
+use super::debug_response::debug_one;
 use super::modal_tests::echo_modal;
 use anyhow::Result;
 use axum::body;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use serenity::builder::CreateInteractionResponse;
-use serenity::model::interactions::application_command::ApplicationCommandInteraction;
+use serenity::model::interactions::{
+    application_command::ApplicationCommandInteraction, modal::ModalSubmitInteraction,
+};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -41,5 +44,15 @@ pub async fn execute_command(
     match cmd.data.name.as_str() {
         "echo_modal" => echo_modal(&cmd),
         _ => Err(InteractionHandleError::UnknownCommand(cmd.data.name)),
+    }
+}
+
+pub async fn execute_component(
+    cmd: ModalSubmitInteraction,
+) -> Result<CreateInteractionResponse, InteractionHandleError> {
+    println!("{:?}", cmd.data.custom_id);
+    match cmd.data.custom_id.as_str() {
+        "echo_modal" => debug_one(&cmd),
+        _ => Err(InteractionHandleError::UnknownCommand(cmd.data.custom_id)),
     }
 }

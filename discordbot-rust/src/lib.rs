@@ -1,8 +1,5 @@
 extern crate lazy_static;
 
-use std::collections::HashMap;
-use std::env;
-
 use axum::async_trait;
 use axum::body;
 use axum::body::{Bytes, HttpBody};
@@ -10,12 +7,16 @@ use axum::extract::rejection::BytesRejection;
 use axum::extract::{FromRequest, Json, RequestParts};
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
-use commands::command_parser::execute_command;
 use commands::command_parser::InteractionHandleError;
+use commands::command_parser::{execute_command, execute_component};
 use ed25519_dalek::PublicKey;
 use serde_json::value::Value;
-use serenity::builder::CreateInteractionResponse;
 use serenity::model::interactions::{Interaction, InteractionResponseType, InteractionType};
+use serenity::{
+    builder::CreateInteractionResponse, model::interactions::modal::ModalSubmitInteraction,
+};
+use std::collections::HashMap;
+use std::env;
 use thiserror::Error;
 
 use security::{verify_discord_message, SignatureValidationError};
@@ -98,6 +99,13 @@ where
     }
 }
 
+pub fn modal_interaction(inter: Interaction) -> Option<ModalSubmitInteraction> {
+    match inter {
+        Interaction::ModalSubmit(i) => Some(i),
+        _ => None,
+    }
+}
+
 pub async fn handle_interaction(
     data: InteractionRequest,
 ) -> Result<Json<InteractionResponse>, InteractionHandleError> {
@@ -119,7 +127,14 @@ pub async fn handle_interaction(
                 Err(_e) => return Err(_e),
             }
         }
-        InteractionType::MessageComponent => todo!(),
+        InteractionType::ModalSubmit => {
+            let cmd = modal_interaction(data).ok_or(InteractionHandleError::MissingPayload)?;
+
+            match execute_component(cmd).await {
+                Ok(result) => result,
+                Err(_e) => return Err(_e),
+            }
+        }
         InteractionType::Autocomplete => todo!(),
         InteractionType::Unknown => todo!(),
         _ => todo!(),

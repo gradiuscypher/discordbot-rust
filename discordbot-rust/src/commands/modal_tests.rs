@@ -1,9 +1,6 @@
-use serenity::model::{
-    event::ApplicationCommandCreateEvent,
-    interactions::{
-        application_command::ApplicationCommandInteraction, message_component::InputTextStyle,
-        InteractionResponseType,
-    },
+use serenity::model::interactions::{
+    application_command::ApplicationCommandInteraction, message_component::InputTextStyle,
+    InteractionResponseType,
 };
 
 use super::command_parser::InteractionHandleError;
