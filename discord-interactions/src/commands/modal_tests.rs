@@ -1,16 +1,14 @@
+use super::command_parser::InteractionHandleError;
+use serenity::builder::CreateInteractionResponse;
 use serenity::model::interactions::{
     application_command::ApplicationCommandInteraction, message_component::InputTextStyle,
     InteractionResponseType,
 };
 
-use super::command_parser::InteractionHandleError;
-use serenity::builder::CreateInteractionResponse;
-
 pub fn echo_modal(
     cmd: ApplicationCommandInteraction,
 ) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
     let mut resp = CreateInteractionResponse::default();
-
     resp.kind(InteractionResponseType::Modal);
     resp.interaction_response_data(|cmd| {
         cmd.custom_id("echo_modal");

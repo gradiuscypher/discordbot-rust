@@ -1,5 +1,5 @@
 use super::debug_response::debug_one;
-use super::modal_tests::echo_modal;
+use super::hackerone::bounty;
 use anyhow::Result;
 use axum::body;
 use axum::http::StatusCode;
@@ -41,7 +41,7 @@ pub async fn execute_command(
     cmd: ApplicationCommandInteraction,
 ) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
     match cmd.data.name.as_str() {
-        "echo_modal" => echo_modal(cmd.clone()),
+        "bounty" => bounty(cmd.clone()),
         _ => Err(InteractionHandleError::UnknownCommand(cmd.data.name)),
     }
 }

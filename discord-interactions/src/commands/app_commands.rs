@@ -1,7 +1,9 @@
 use anyhow::{anyhow, Error, Result};
 use serenity::http::{self};
 use serenity::model::id::GuildId;
-use serenity::model::interactions::application_command::ApplicationCommand;
+use serenity::model::interactions::application_command::{
+    ApplicationCommand, ApplicationCommandOptionType,
+};
 
 pub async fn install_commands(
     token: &str,
@@ -16,8 +18,15 @@ pub async fn install_commands(
         .set_application_commands(client, |commands| {
             commands.create_application_command(|command| {
                 command
-                    .name("echo_modal")
-                    .description("Creates an echo modal example")
+                    .name("bounty")
+                    .description("Start a poll for H1 bounty amount")
+                    .create_option(|option| {
+                        option
+                            .name("ticket_id")
+                            .description("The H1 ticket ID")
+                            .kind(ApplicationCommandOptionType::String)
+                            .required(true)
+                    })
             })
         })
         .await;
