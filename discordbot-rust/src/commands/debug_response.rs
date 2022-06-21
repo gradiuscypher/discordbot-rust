@@ -4,8 +4,8 @@ use super::command_parser::InteractionHandleError;
 use serenity::builder::CreateInteractionResponse;
 
 pub fn debug_one(
-    cmd: &ModalSubmitInteraction,
-) -> Result<CreateInteractionResponse, InteractionHandleError> {
+    cmd: ModalSubmitInteraction,
+) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
     let mut resp = CreateInteractionResponse::default();
 
     println!("{:?}", cmd.data.components);

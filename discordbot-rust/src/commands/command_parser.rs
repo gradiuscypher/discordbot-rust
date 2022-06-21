@@ -37,22 +37,21 @@ impl IntoResponse for InteractionHandleError {
     }
 }
 
-// ) -> Result<Json<InteractionResponse>, InteractionHandleError> {
 pub async fn execute_command(
     cmd: ApplicationCommandInteraction,
-) -> Result<CreateInteractionResponse, InteractionHandleError> {
+) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
     match cmd.data.name.as_str() {
-        "echo_modal" => echo_modal(&cmd),
+        "echo_modal" => echo_modal(cmd.clone()),
         _ => Err(InteractionHandleError::UnknownCommand(cmd.data.name)),
     }
 }
 
 pub async fn execute_component(
     cmd: ModalSubmitInteraction,
-) -> Result<CreateInteractionResponse, InteractionHandleError> {
+) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
     println!("{:?}", cmd.data.custom_id);
     match cmd.data.custom_id.as_str() {
-        "echo_modal" => debug_one(&cmd),
+        "echo_modal" => debug_one(cmd.clone()),
         _ => Err(InteractionHandleError::UnknownCommand(cmd.data.custom_id)),
     }
 }
