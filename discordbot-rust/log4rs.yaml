@@ -18,3 +18,5 @@ root:
 loggers:
   interactions:
     level: info
+  slash_cli:
+    level: info
