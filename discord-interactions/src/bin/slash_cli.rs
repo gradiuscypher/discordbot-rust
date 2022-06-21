@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use discordbot_rust::commands::app_commands::install_commands;
+use discord_interactions::commands::app_commands::install_commands;
 use log::{error, info};
 
 #[derive(Parser, Debug)]

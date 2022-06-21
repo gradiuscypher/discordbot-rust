@@ -1,6 +1,6 @@
 use axum::routing::post;
 use axum::{Router, Server};
-use discordbot_rust::handle_interaction;
+use discord_interactions::handle_interaction;
 use log::info;
 use log4rs;
 
