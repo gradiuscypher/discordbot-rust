@@ -7,9 +7,10 @@ use axum::extract::rejection::BytesRejection;
 use axum::extract::{FromRequest, Json, RequestParts};
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
-use commands::command_parser::InteractionHandleError;
 use commands::command_parser::{execute_command, execute_component};
+use commands::command_parser::{execute_modal, InteractionHandleError};
 use ed25519_dalek::PublicKey;
+use log::info;
 use serde_json::value::Value;
 use serenity::model::interactions::{Interaction, InteractionResponseType, InteractionType};
 use serenity::{
@@ -127,10 +128,21 @@ pub async fn handle_interaction(
                 Err(_e) => return Err(_e),
             }
         }
+        InteractionType::MessageComponent => {
+            info!("We're a message component");
+            let cmd = data
+                .message_component()
+                .ok_or(InteractionHandleError::MissingPayload)?;
+
+            match execute_component(cmd).await {
+                Ok(result) => result,
+                Err(_e) => return Err(_e),
+            }
+        }
         InteractionType::ModalSubmit => {
             let cmd = modal_interaction(data).ok_or(InteractionHandleError::MissingPayload)?;
 
-            match execute_component(cmd).await {
+            match execute_modal(cmd).await {
                 Ok(result) => result,
                 Err(_e) => return Err(_e),
             }

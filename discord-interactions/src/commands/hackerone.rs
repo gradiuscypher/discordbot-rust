@@ -1,4 +1,5 @@
 use super::command_parser::InteractionHandleError;
+use log::info;
 use serenity::{
     builder::CreateInteractionResponse,
     model::interactions::{
@@ -12,6 +13,7 @@ pub fn bounty(
 ) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
     let mut resp = CreateInteractionResponse::default();
     resp.kind(InteractionResponseType::ChannelMessageWithSource);
+    info!("Doing bounty");
 
     resp.interaction_response_data(|rdata| {
         rdata.content("Click the bounty you feel is appropriate");

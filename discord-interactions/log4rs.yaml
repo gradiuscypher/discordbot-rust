@@ -1,4 +1,4 @@
-refresh_rate: 30 seconds
+refresh_rate: 5 seconds
 appenders:
   stdout:
     kind: console
@@ -20,3 +20,5 @@ loggers:
     level: info
   slash_cli:
     level: info
+  discord_interactions:
+    level: debug
