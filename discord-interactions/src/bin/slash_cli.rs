@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use discord_interactions::commands::app_commands::install_commands;
+use discord_interactions::commands::hackerone;
 use log::{error, info};
 
 #[derive(Parser, Debug)]
@@ -22,7 +22,7 @@ enum Commands {
 }
 
 async fn install_to_guild(token: &str, app_id: u64, guild_id: u64) {
-    match install_commands(token, app_id, guild_id).await {
+    match hackerone::create_commands::install_commands(token, app_id, guild_id).await {
         Ok(commands) => info!("Created commands: {:?}", commands),
         Err(e) => error!("{e}"),
     }

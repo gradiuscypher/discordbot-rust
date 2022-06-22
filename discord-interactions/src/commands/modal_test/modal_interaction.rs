@@ -1,6 +1,6 @@
 use serenity::model::interactions::modal::ModalSubmitInteraction;
 
-use super::command_parser::InteractionHandleError;
+use super::super::command_parser::InteractionHandleError;
 use serenity::builder::CreateInteractionResponse;
 
 pub fn debug_one(

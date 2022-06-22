@@ -11,7 +11,6 @@ pub async fn install_commands(
     guild_id: u64,
 ) -> Result<Vec<ApplicationCommand>, Error> {
     let client = http::Http::new_with_application_id(&token, app_id);
-    // let target_guild = client.get_guild(guild_id).await.unwrap();
     let target_guild = GuildId(guild_id);
 
     let commands = target_guild

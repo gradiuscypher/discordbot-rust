@@ -129,7 +129,6 @@ pub async fn handle_interaction(
             }
         }
         InteractionType::MessageComponent => {
-            info!("We're a message component");
             let cmd = data
                 .message_component()
                 .ok_or(InteractionHandleError::MissingPayload)?;

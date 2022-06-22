@@ -1,4 +1,4 @@
-use super::command_parser::InteractionHandleError;
+use super::super::command_parser::InteractionHandleError;
 use serenity::builder::CreateInteractionResponse;
 use serenity::model::interactions::{
     application_command::ApplicationCommandInteraction, message_component::InputTextStyle,

@@ -10,7 +10,7 @@ appenders:
     encoder:
       pattern: "{d(%Y-%m-%d %H:%M:%S)} | {({l}):5.5} | {f}:{L} — {m}{n}"
 root:
-  level: error
+  level: info
   appenders:
     - stdout
     - bot_logs
@@ -21,4 +21,4 @@ loggers:
   slash_cli:
     level: info
   discord_interactions:
-    level: debug
+    level: info
