@@ -10,7 +10,6 @@ use axum::response::{IntoResponse, Response};
 use commands::command_parser::{execute_command, execute_component};
 use commands::command_parser::{execute_modal, InteractionHandleError};
 use ed25519_dalek::PublicKey;
-use log::info;
 use serde_json::value::Value;
 use serenity::model::interactions::{Interaction, InteractionResponseType, InteractionType};
 use serenity::{

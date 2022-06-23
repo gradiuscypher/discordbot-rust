@@ -4,7 +4,7 @@ use anyhow::Result;
 use axum::body;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
-use log::{debug, error, info};
+use log::{debug, error};
 use serenity::builder::CreateInteractionResponse;
 use serenity::model::interactions::{
     application_command::ApplicationCommandInteraction,
