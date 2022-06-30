@@ -52,10 +52,9 @@ async fn main() {
             username,
             api_key,
         } => {
-            discord_interactions::commands::hackerone::api_wrapper::get_report(
-                &report_id, &username, &api_key,
-            )
-            .await
+            discord_interactions::commands::hackerone::api_wrapper::get_report(&report_id)
+                .await
+                .unwrap();
         }
     }
 }

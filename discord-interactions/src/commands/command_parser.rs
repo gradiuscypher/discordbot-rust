@@ -44,7 +44,7 @@ pub async fn execute_command(
 ) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
     debug!("ApplicationCommandInteraction: {:?}", cmd.data.name);
     match cmd.data.name.as_str() {
-        "bounty" => hackerone::command_interaction::bounty(cmd.clone()),
+        "bounty" => hackerone::command_interaction::bounty(cmd.clone()).await,
         _ => Err(InteractionHandleError::UnknownCommand(cmd.data.name)),
     }
 }
