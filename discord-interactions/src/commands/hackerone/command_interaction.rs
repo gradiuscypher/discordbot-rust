@@ -1,5 +1,4 @@
 use super::super::command_parser::InteractionHandleError;
-use super::persistence::local as persistence;
 use crate::commands::hackerone::api_wrapper::get_report;
 use serenity::{
     builder::{CreateActionRow, CreateButton, CreateEmbed, CreateInteractionResponse},
