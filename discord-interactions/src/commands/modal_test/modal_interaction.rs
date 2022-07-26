@@ -1,6 +1,7 @@
-use serenity::model::interactions::modal::ModalSubmitInteraction;
+use serenity::model::application::interaction::modal::ModalSubmitInteraction;
 
 use super::super::command_parser::InteractionHandleError;
+use log::info;
 use serenity::builder::CreateInteractionResponse;
 
 pub fn debug_one(
@@ -8,7 +9,7 @@ pub fn debug_one(
 ) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
     let mut resp = CreateInteractionResponse::default();
 
-    println!("{:?}", cmd.data.components);
+    info!("{:?}", cmd.data.components);
 
     resp.interaction_response_data(|rdata| {
         rdata.content("A debug message!");

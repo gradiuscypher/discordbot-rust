@@ -11,9 +11,10 @@ use commands::command_parser::{execute_command, execute_component};
 use commands::command_parser::{execute_modal, InteractionHandleError};
 use ed25519_dalek::PublicKey;
 use serde_json::value::Value;
-use serenity::model::interactions::{Interaction, InteractionResponseType, InteractionType};
-use serenity::{
-    builder::CreateInteractionResponse, model::interactions::modal::ModalSubmitInteraction,
+use serenity::builder::CreateInteractionResponse;
+use serenity::model::application::interaction::modal::ModalSubmitInteraction;
+use serenity::model::application::interaction::{
+    Interaction, InteractionResponseType, InteractionType,
 };
 use std::collections::HashMap;
 use std::env;

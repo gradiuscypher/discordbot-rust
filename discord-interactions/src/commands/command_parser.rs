@@ -1,4 +1,4 @@
-use crate::commands::hackerone;
+use crate::commands::{button_test, modal_test, selectmenu_test, slash_test};
 
 use anyhow::Result;
 use axum::body;
@@ -6,10 +6,9 @@ use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use log::{debug, error};
 use serenity::builder::CreateInteractionResponse;
-use serenity::model::interactions::{
-    application_command::ApplicationCommandInteraction,
-    message_component::MessageComponentInteraction, modal::ModalSubmitInteraction,
-};
+use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
+use serenity::model::application::interaction::message_component::MessageComponentInteraction;
+use serenity::model::application::interaction::modal::ModalSubmitInteraction;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -44,8 +43,15 @@ pub async fn execute_command(
 ) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
     debug!("ApplicationCommandInteraction: {:?}", cmd.data.name);
     match cmd.data.name.as_str() {
-        "bounty" => hackerone::command_interaction::bounty(cmd.clone()).await,
-        _ => Err(InteractionHandleError::UnknownCommand(cmd.data.name)),
+        "demo_modal" => modal_test::command_interaction::demo_modal(cmd),
+        "basic_slash" => slash_test::command_interaction::basic_slash(cmd),
+        "static_slash" => slash_test::command_interaction::static_slash(cmd),
+        "buttons" => button_test::command_interaction::make_buttons(cmd),
+        "select_menu" => selectmenu_test::command_interaction::select_menu(cmd),
+        _ => Err(InteractionHandleError::UnknownCommand(format!(
+            "ApplicationCommand: {}",
+            cmd.data.name
+        ))),
     }
 }
 
@@ -55,8 +61,11 @@ pub async fn execute_component(
     debug!("MessageComponentInteraction: {:?}", cmd.data.custom_id);
     let command: &str = cmd.data.custom_id.as_str().split("_").next().unwrap();
     match command {
-        "hackerone" => hackerone::component_interaction::button_handler(cmd),
-        _ => Err(InteractionHandleError::UnknownCommand(cmd.data.custom_id)),
+        "button" => button_test::component_interaction::run_buttons(cmd),
+        _ => Err(InteractionHandleError::UnknownCommand(format!(
+            "MessageComponent: {}",
+            cmd.data.custom_id
+        ))),
     }
 }
 
@@ -65,6 +74,10 @@ pub async fn execute_modal(
 ) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
     debug!("{:?}", cmd.data.custom_id);
     match cmd.data.custom_id.as_str() {
-        _ => Err(InteractionHandleError::UnknownCommand(cmd.data.custom_id)),
+        "echo_modal" => modal_test::modal_interaction::debug_one(cmd),
+        _ => Err(InteractionHandleError::UnknownCommand(format!(
+            "ModalSubmit: {}",
+            cmd.data.custom_id
+        ))),
     }
 }

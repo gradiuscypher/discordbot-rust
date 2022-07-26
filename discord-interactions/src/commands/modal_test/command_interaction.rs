@@ -1,11 +1,11 @@
 use super::super::command_parser::InteractionHandleError;
 use serenity::builder::CreateInteractionResponse;
-use serenity::model::interactions::{
-    application_command::ApplicationCommandInteraction, message_component::InputTextStyle,
-    InteractionResponseType,
-};
+use serenity::model::application::interaction::InteractionResponseType;
 
-pub fn echo_modal(
+use serenity::model::application::component::InputTextStyle;
+use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
+
+pub fn demo_modal(
     cmd: ApplicationCommandInteraction,
 ) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
     let mut resp = CreateInteractionResponse::default();
