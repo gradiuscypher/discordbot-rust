@@ -61,7 +61,8 @@ pub fn apply(
                 ar.create_select_menu(|m| {
                     m.custom_id("timezone")
                         .options(|options| options.set_options(tz_options));
-                    m.placeholder("Select your timezone...")
+                    m.placeholder("Select your timezone or leave blank...");
+                    m.min_values(0)
                 })
             })
         });
