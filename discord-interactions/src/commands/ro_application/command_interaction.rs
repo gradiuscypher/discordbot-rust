@@ -33,6 +33,7 @@ pub fn apply(
         class_options.push(new_option);
     }
 
+    // might want to do autocomplete with this: http://worldtimeapi.org/pages/examples
     let mut tz_options: Vec<CreateSelectMenuOption> = Vec::new();
     for tz in TIMEZONES {
         let new_option = CreateSelectMenuOption::new(tz, tz);
