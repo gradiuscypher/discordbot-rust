@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use discord_interactions::commands::{button_test, modal_test, selectmenu_test, slash_test};
+use discord_interactions::commands::ro_application;
 use log::{error, info};
 
 #[derive(Parser, Debug)]
@@ -22,19 +22,7 @@ enum Commands {
 }
 
 async fn install_to_guild(token: &str, app_id: u64, guild_id: u64) {
-    match modal_test::create_commands::install_commands(token, app_id, guild_id).await {
-        Ok(commands) => info!("Created commands: {:?}", commands),
-        Err(e) => error!("{e}"),
-    }
-    match slash_test::create_commands::install_commands(token, app_id, guild_id).await {
-        Ok(commands) => info!("Created commands: {:?}", commands),
-        Err(e) => error!("{e}"),
-    }
-    match button_test::create_commands::install_commands(token, app_id, guild_id).await {
-        Ok(commands) => info!("Created commands: {:?}", commands),
-        Err(e) => error!("{e}"),
-    }
-    match selectmenu_test::create_commands::install_commands(token, app_id, guild_id).await {
+    match ro_application::create_commands::install_commands(token, app_id, guild_id).await {
         Ok(commands) => info!("Created commands: {:?}", commands),
         Err(e) => error!("{e}"),
     }

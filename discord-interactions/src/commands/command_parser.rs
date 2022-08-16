@@ -1,4 +1,4 @@
-use crate::commands::{button_test, modal_test, selectmenu_test, slash_test};
+use crate::commands::{button_test, modal_test, ro_application};
 
 use anyhow::Result;
 use axum::body;
@@ -44,11 +44,7 @@ pub async fn execute_command(
 ) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
     debug!("ApplicationCommandInteraction: {:?}", cmd.data.name);
     match cmd.data.name.as_str() {
-        "demo_modal" => modal_test::command_interaction::demo_modal(cmd),
-        "basic_slash" => slash_test::command_interaction::basic_slash(cmd),
-        "static_slash" => slash_test::command_interaction::static_slash(cmd),
-        "buttons" => button_test::command_interaction::make_buttons(cmd),
-        "select_menu" => selectmenu_test::command_interaction::select_menu(cmd),
+        "apply" => ro_application::command_interaction::apply(cmd),
         _ => Err(InteractionHandleError::UnknownCommand(format!(
             "ApplicationCommand: {}",
             cmd.data.name

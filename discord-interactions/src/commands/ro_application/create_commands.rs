@@ -17,8 +17,8 @@ pub async fn install_commands(
     let new_command = target_guild
         .create_application_command(&client, |command| {
             command
-                .name("demo_modal")
-                .description("Sends a message with a demo modal")
+                .name("apply")
+                .description("Starts the guild application process.")
         })
         .await;
 
