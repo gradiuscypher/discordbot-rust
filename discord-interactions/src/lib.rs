@@ -7,6 +7,7 @@ use axum::extract::rejection::BytesRejection;
 use axum::extract::{FromRequest, Json, RequestParts};
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
+use commands::command_parser::execute_autocomplete;
 use commands::command_parser::{execute_command, execute_component};
 use commands::command_parser::{execute_modal, InteractionHandleError};
 use ed25519_dalek::PublicKey;
@@ -146,7 +147,16 @@ pub async fn handle_interaction(
                 Err(_e) => return Err(_e),
             }
         }
-        InteractionType::Autocomplete => todo!(),
+        InteractionType::Autocomplete => {
+            let cmd = data
+                .autocomplete()
+                .ok_or(InteractionHandleError::MissingPayload)?;
+
+            match execute_autocomplete(cmd).await {
+                Ok(result) => result,
+                Err(_e) => return Err(_e),
+            }
+        }
         InteractionType::Unknown => todo!(),
         _ => todo!(),
     };

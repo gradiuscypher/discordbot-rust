@@ -7,6 +7,7 @@ use axum::response::{IntoResponse, Response};
 use log::{debug, error};
 use serenity::builder::CreateInteractionResponse;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
+use serenity::model::application::interaction::autocomplete::AutocompleteInteraction;
 use serenity::model::application::interaction::message_component::MessageComponentInteraction;
 use serenity::model::application::interaction::modal::ModalSubmitInteraction;
 use thiserror::Error;
@@ -78,6 +79,33 @@ pub async fn execute_modal(
         _ => Err(InteractionHandleError::UnknownCommand(format!(
             "ModalSubmit: {}",
             cmd.data.custom_id
+        ))),
+    }
+}
+
+pub async fn execute_autocomplete(
+    cmd: AutocompleteInteraction,
+) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
+    debug!("data: {:?}", cmd.data);
+    // get the command option that's currently focused
+    let command: &str = cmd
+        .data
+        .options
+        .iter()
+        .find(|f| f.focused == true)
+        .unwrap()
+        .name
+        .as_str()
+        .split("_")
+        .next()
+        .unwrap();
+
+    debug!("command: {command}");
+
+    match command {
+        _ => Err(InteractionHandleError::UnknownCommand(format!(
+            "AutocompleteInteraction: {}",
+            command
         ))),
     }
 }
