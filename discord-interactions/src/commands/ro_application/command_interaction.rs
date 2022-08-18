@@ -19,7 +19,6 @@ static CLASSES: &[&str] = &[
     "Assassin",
     "Rogue",
 ];
-static TIMEZONES: &[&str] = &["Pacific", "Eastern"];
 
 pub fn apply(
     cmd: ApplicationCommandInteraction,
@@ -33,13 +32,6 @@ pub fn apply(
         class_options.push(new_option);
     }
 
-    // might want to do autocomplete with this: http://worldtimeapi.org/pages/examples
-    let mut tz_options: Vec<CreateSelectMenuOption> = Vec::new();
-    for tz in TIMEZONES {
-        let new_option = CreateSelectMenuOption::new(tz, tz);
-        tz_options.push(new_option);
-    }
-
     resp.interaction_response_data(|cmd| {
         cmd.custom_id("apply");
         cmd.title("Guild Application");
@@ -49,21 +41,6 @@ pub fn apply(
                     it.style(InputTextStyle::Short)
                         .label("Character Name")
                         .custom_id("character_name")
-                })
-            });
-            c.create_action_row(|ar| {
-                ar.create_select_menu(|m| {
-                    m.custom_id("class")
-                        .options(|options| options.set_options(class_options));
-                    m.placeholder("Select your character class...")
-                })
-            });
-            c.create_action_row(|ar| {
-                ar.create_select_menu(|m| {
-                    m.custom_id("timezone")
-                        .options(|options| options.set_options(tz_options));
-                    m.placeholder("Select your timezone or leave blank...");
-                    m.min_values(0)
                 })
             })
         });

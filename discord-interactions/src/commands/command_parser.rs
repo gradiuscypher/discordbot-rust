@@ -1,11 +1,13 @@
-use crate::commands::{button_test, modal_test, ro_application};
+use crate::commands::ro_application;
 
 use anyhow::Result;
 use axum::body;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
+use config::Config;
 use log::{debug, error};
 use serenity::builder::CreateInteractionResponse;
+use serenity::http;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
 use serenity::model::application::interaction::autocomplete::AutocompleteInteraction;
 use serenity::model::application::interaction::message_component::MessageComponentInteraction;
@@ -57,8 +59,8 @@ pub async fn execute_component(
 ) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
     debug!("MessageComponentInteraction: {:?}", cmd.data.custom_id);
     let command: &str = cmd.data.custom_id.as_str().split("_").next().unwrap();
+
     match command {
-        "button" => button_test::component_interaction::run_buttons(cmd),
         _ => Err(InteractionHandleError::UnknownCommand(format!(
             "MessageComponent: {}",
             cmd.data.custom_id
@@ -69,9 +71,19 @@ pub async fn execute_component(
 pub async fn execute_modal(
     cmd: ModalSubmitInteraction,
 ) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
+    let settings = Config::builder()
+        .add_source(config::File::with_name("config.toml"))
+        .build()
+        .unwrap();
+
+    let token = settings.get_string("bot.token").unwrap();
+    let application_id: u64 = settings.get("bot.application_id").unwrap();
+    let client = http::Http::new_with_application_id(&token, application_id);
+
     debug!("{:?}", cmd.data.custom_id);
+
     match cmd.data.custom_id.as_str() {
-        "echo_modal" => modal_test::modal_interaction::debug_one(cmd),
+        "apply" => ro_application::modal_interaction::apply(cmd, client).await,
         _ => Err(InteractionHandleError::UnknownCommand(format!(
             "ModalSubmit: {}",
             cmd.data.custom_id
