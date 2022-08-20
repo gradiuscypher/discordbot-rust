@@ -1,4 +1,4 @@
-use crate::commands::ro_application;
+use crate::commands::{ro_application, ro_endow};
 
 use anyhow::Result;
 use axum::body;
@@ -47,6 +47,8 @@ pub async fn execute_command(
     debug!("ApplicationCommandInteraction: {:?}", cmd.data.name);
     match cmd.data.name.as_str() {
         "apply" => ro_application::command_interaction::apply(cmd),
+        "endow" => ro_endow::command_interaction::endow(cmd),
+        "sage" => ro_endow::command_interaction::sage(cmd),
         _ => Err(InteractionHandleError::UnknownCommand(format!(
             "ApplicationCommand: {}",
             cmd.data.name

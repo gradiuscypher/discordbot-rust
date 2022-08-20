@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use discord_interactions::commands::ro_application;
+use discord_interactions::commands::{ro_application, ro_endow};
 use log::{error, info};
 
 #[derive(Parser, Debug)]
@@ -23,6 +23,10 @@ enum Commands {
 
 async fn install_to_guild(token: &str, app_id: u64, guild_id: u64) {
     match ro_application::create_commands::install_commands(token, app_id, guild_id).await {
+        Ok(commands) => info!("Created commands: {:?}", commands),
+        Err(e) => error!("{e}"),
+    }
+    match ro_endow::create_commands::install_commands(token, app_id, guild_id).await {
         Ok(commands) => info!("Created commands: {:?}", commands),
         Err(e) => error!("{e}"),
     }
