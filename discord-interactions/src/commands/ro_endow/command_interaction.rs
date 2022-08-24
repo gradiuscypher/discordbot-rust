@@ -18,7 +18,7 @@ pub fn endow(
                 .thumbnail("https://file5s.ratemyserver.net/items/large/990.gif")
                 .fields(vec![("Element", "Fire", true), ("Your Stone", "Yes", true)])
                 .footer(|f| {
-                    f.text("This service is provided by the Star Ocean guild. Sign up to be an endow Sage with the `/sage` command.")
+                    f.text("This service is provided by the Star Ocean guild. Sign up to be an endow Sage with the /sage command.")
                 })
                 .color(Color::RED)
         });
