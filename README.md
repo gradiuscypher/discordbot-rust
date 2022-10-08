@@ -1,2 +1,2 @@
-# discordbot-rust-serverless
-It's a discord bot, written in Rust, that can be run serverless.
+# discordbot-rust
+It's a discord bot, written in Rust. It's made up of two parts, [discord-interactions](discord-interactions/README.md) and [discord-bot](discord-bot/README.md). `discord-interactions` handles all the user's interactions through Application commands (Slash commands, button presses, etc) and `discord-bot` handles all of the tasks that require an active connection to Discord (joins, parts, messages, etc).
