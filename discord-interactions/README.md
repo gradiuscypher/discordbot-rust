@@ -24,6 +24,7 @@ TODO
 
 # Current Work
 * docs for how create new commands
+* Fix the markdown links since they're broken now, lul.
 
 # Up Next
 * docs for how to host this bot on various services
