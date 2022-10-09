@@ -1,4 +1,4 @@
-use crate::commands::{button_test, modal_test, selectmenu_test, slash_test};
+use crate::commands::{button_test, modal_test, role_selection, selectmenu_test, slash_test};
 
 use anyhow::Result;
 use axum::body;
@@ -52,6 +52,7 @@ pub async fn execute_command(
         "static_slash" => slash_test::command_interaction::static_slash(cmd),
         "buttons" => button_test::command_interaction::make_buttons(cmd),
         "select_menu" => selectmenu_test::command_interaction::select_menu(cmd),
+        "role_select" => role_selection::command_interaction::role_select(cmd).await,
         _ => Err(InteractionHandleError::UnknownCommand(format!(
             "ApplicationCommand: {}",
             cmd.data.name

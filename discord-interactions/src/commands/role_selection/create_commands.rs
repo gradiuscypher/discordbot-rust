@@ -17,8 +17,8 @@ pub async fn install_commands(
     let new_command = target_guild
         .create_application_command(&client, |command| {
             command
-                .name("select_menu")
-                .description("Creates a select menu example")
+                .name("role_select")
+                .description("Add or remove Discord roles")
         })
         .await;
 
