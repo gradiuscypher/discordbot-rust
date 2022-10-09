@@ -1,6 +1,6 @@
 use axum::routing::post;
 use axum::{Router, Server};
-use discord_interactions::handle_interaction;
+use interactions::handle_interaction;
 use log::info;
 use log4rs;
 

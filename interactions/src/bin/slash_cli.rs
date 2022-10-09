@@ -1,6 +1,6 @@
 use clap::{Parser, Subcommand};
 // use discord_interactions::commands::{button_test, modal_test, selectmenu_test, slash_test};
-use discord_interactions::commands::role_selection;
+use interactions::commands::role_selection;
 use log::{error, info};
 use serenity::http;
 use serenity::model::id::GuildId;
