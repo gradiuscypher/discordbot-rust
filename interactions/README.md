@@ -16,6 +16,9 @@ This is the file where the command parsing starts, in particular, the `handle_in
 ## [command_parser.rs](src/commands/command_parser.rs)
 This file has a collection of parsers for each Interaction type. When you add new commands, you also add the command name to the appropriate Interaction parsing method. When that command name is provided, the `match` block will match that and will run the related function.
 
+## [slash_cli.rs](src/bin/slash_cli.rs)
+This is the tool that's used to install the Application commands to a guild or to an Application globally.
+
 # How to set up the application
 ## Creating the Discord Application
 TODO
