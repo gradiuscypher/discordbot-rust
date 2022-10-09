@@ -38,9 +38,7 @@ TODO
 
 # Current Work
 * docs for how create new commands
-* need a way to bubble up errors all the way from the commands themselves - does this not work already?
-  * lib.rs can handle an error, as it will just return an error
-  * execute_command in command_parser.rs can raise an Err, but doesn't parse whether a command has returned an error or not, it just expects a InteractionResponse.
+* check and see how map.retain was successful or not
 
 # Up Next (Sorted)
 * docs for how to host this bot on various services

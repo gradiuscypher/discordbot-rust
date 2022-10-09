@@ -20,6 +20,8 @@ pub enum InteractionHandleError {
     UnknownCommand(String),
     #[error("missing required field {0}")]
     MissingRequiredField(&'static str),
+    #[error("No Guild ID in command context")]
+    MissingGuildContext,
 }
 
 impl IntoResponse for InteractionHandleError {
@@ -27,9 +29,10 @@ impl IntoResponse for InteractionHandleError {
         error!("error handling interaction: {self}");
 
         let status = match self {
-            Self::MissingPayload | Self::MissingRequiredField(_) | Self::UnknownCommand(_) => {
-                StatusCode::BAD_REQUEST
-            }
+            Self::MissingPayload
+            | Self::MissingRequiredField(_)
+            | Self::UnknownCommand(_)
+            | Self::MissingGuildContext => StatusCode::BAD_REQUEST,
         };
 
         Response::builder()

@@ -44,7 +44,7 @@ pub fn select_menu(
     Ok(resp)
 }
 
-pub fn role_select(
+pub async fn role_select(
     cmd: ApplicationCommandInteraction,
 ) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
     // get the client object to fetch roles from the guild
@@ -55,27 +55,31 @@ pub fn role_select(
 
     let token = settings.get_string("bot.token").unwrap();
     let application_id: u64 = settings.get("bot.application_id").unwrap();
-    let client = http::Http::new_with_application_id(&token, application_id);
+    let http = http::Http::new_with_application_id(&token, application_id);
 
     // fetch the guild's list of self-assignable roles (starts with .), use the provided metadata file for role descriptions, otherwise default to empty
-    // TODO: how can I raise an error here?
     match cmd.guild_id {
-        Some(guild_id) => {
-            println!("has guild id")
+        Some(user_guild) => {
+            // identify which roles the user already has enabled and mark it as selected
+            let mut guild_roles = user_guild.roles(&http).await.unwrap();
+            println!("guild roles: {:?}", guild_roles);
+            let user_roles = user_guild.member(&http, cmd.user.id).await.unwrap().roles;
+
+            // https://doc.rust-lang.org/std/collections/struct.HashMap.html#method.retain
+            guild_roles.retain(|_, role| role.name.starts_with("."));
+            println!("guild roles after: {:?}", guild_roles);
+
+            // build the final message and send as response
+            let mut resp = CreateInteractionResponse::default();
+            resp.kind(InteractionResponseType::ChannelMessageWithSource);
+
+            resp.interaction_response_data(|msg| {
+                msg.content("This is a select menu example.");
+                msg
+            });
+
+            Ok(resp)
         }
-        None => println!("no has guild id"),
+        None => Err(InteractionHandleError::MissingGuildContext),
     }
-
-    // identify which roles the user already has enabled and mark it as selected
-
-    // build the final message and send as response
-    let mut resp = CreateInteractionResponse::default();
-    resp.kind(InteractionResponseType::ChannelMessageWithSource);
-
-    resp.interaction_response_data(|msg| {
-        msg.content("This is a select menu example.");
-        msg
-    });
-
-    Ok(resp)
 }
