@@ -4,7 +4,7 @@ use super::super::command_parser::InteractionHandleError;
 use config::Config;
 use serenity::builder::{
     CreateActionRow, CreateComponents, CreateInteractionResponse, CreateSelectMenu,
-    CreateSelectMenuOption, CreateSelectMenuOptions,
+    CreateSelectMenuOption,
 };
 use serenity::http;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
@@ -23,6 +23,8 @@ pub async fn role_select(
     let application_id: u64 = settings.get("bot.application_id").unwrap();
     let http = http::Http::new_with_application_id(&token, application_id);
 
+    // TODO: we could send a message to the channel from the command with channel_id.send_message, then use tokio::spawn to spawn it in another thread and respond to the original slash command with a "we're thinking" message
+    // TODO: see banpool bot logic from past commits
     // fetch the guild's list of self-assignable roles (starts with .), use the provided metadata file for role descriptions, otherwise default to empty
     match cmd.guild_id {
         Some(user_guild) => {
