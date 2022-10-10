@@ -41,15 +41,14 @@ TODO
 
 # Current Work
 * docs for how create new commands
-* check and see how map.retain was successful or not
+* add descriptions for roles in role selection
 
 # Up Next (Sorted)
 * docs for how to host this bot on various services
 * repurpose `slash-cli.rs` to just `install-commands.rs` and leave `slash-cli.rs` as a CLI tool example
   * install specific commands rather than having a giant block of all the commands every time?
-* delete existing commands when running the `install-commands.rs` tool
 
 # Backlog (Unsorted)
-* how to set up multiple branches for different purpose bots
+* how to set up multiple branches for different purpose bots - possibly forking or maybe adding upstream and merge example?
 * rename and refactor "test" directories to be examples and templates for similar commands
 * rename the variables in the template commands to be more descriptive (eg: resp, cmd, etc)

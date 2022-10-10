@@ -67,6 +67,7 @@ pub async fn execute_component(
     let command: &str = cmd.data.custom_id.as_str().split("_").next().unwrap();
     match command {
         "button" => button_test::component_interaction::run_buttons(cmd),
+        "roles" => role_selection::component_interaction::process_role_select(cmd).await,
         _ => Err(InteractionHandleError::UnknownCommand(format!(
             "MessageComponent: {}",
             cmd.data.custom_id

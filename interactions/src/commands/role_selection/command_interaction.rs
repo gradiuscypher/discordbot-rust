@@ -2,47 +2,13 @@
 
 use super::super::command_parser::InteractionHandleError;
 use config::Config;
-use serenity::builder::CreateInteractionResponse;
+use serenity::builder::{
+    CreateActionRow, CreateComponents, CreateInteractionResponse, CreateSelectMenu,
+    CreateSelectMenuOption, CreateSelectMenuOptions,
+};
 use serenity::http;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
 use serenity::model::application::interaction::InteractionResponseType;
-
-pub fn select_menu(
-    cmd: ApplicationCommandInteraction,
-) -> Result<CreateInteractionResponse<'static>, InteractionHandleError> {
-    let mut resp = CreateInteractionResponse::default();
-    resp.kind(InteractionResponseType::ChannelMessageWithSource);
-
-    resp.interaction_response_data(|cmd| {
-        cmd.content("This is a select menu example.");
-        cmd.components(|components| {
-            components.create_action_row(|actionrow| {
-                actionrow.create_select_menu(|menu| {
-                    menu.custom_id("select_menu").options(|options| {
-                        options.create_option(|option| {
-                            option.label("option1");
-                            option.description("This is select menu example option 1");
-                            option.value("value1")
-                        });
-                        options.create_option(|option| {
-                            option.label("option2");
-                            option.description("This is select menu example option 2");
-                            option.value("value2")
-                        });
-                        options.create_option(|option| {
-                            option.label("option3");
-                            option.description("This is select menu example option 3");
-                            option.value("value3")
-                        })
-                    })
-                })
-            })
-        });
-        cmd
-    });
-
-    Ok(resp)
-}
 
 pub async fn role_select(
     cmd: ApplicationCommandInteraction,
@@ -62,19 +28,43 @@ pub async fn role_select(
         Some(user_guild) => {
             // identify which roles the user already has enabled and mark it as selected
             let mut guild_roles = user_guild.roles(&http).await.unwrap();
-            println!("guild roles: {:?}", guild_roles);
-            let user_roles = user_guild.member(&http, cmd.user.id).await.unwrap().roles;
 
             // https://doc.rust-lang.org/std/collections/struct.HashMap.html#method.retain
             guild_roles.retain(|_, role| role.name.starts_with("."));
-            println!("guild roles after: {:?}", guild_roles);
+
+            let mut user_roles = user_guild.member(&http, cmd.user.id).await.unwrap().roles;
+            user_roles.retain(|role_id| guild_roles.contains_key(role_id));
 
             // build the final message and send as response
             let mut resp = CreateInteractionResponse::default();
             resp.kind(InteractionResponseType::ChannelMessageWithSource);
 
+            let mut components = CreateComponents::default();
+            let mut action_row = CreateActionRow::default();
+            let mut select_menu = CreateSelectMenu::default();
+            let mut opt_vec = Vec::new();
+
+            for role in guild_roles {
+                let mut option = CreateSelectMenuOption::default();
+                option.label(&role.1.name);
+                option.value(&role.1.id);
+                option.default_selection(user_roles.contains(&role.0));
+                opt_vec.push(option);
+            }
+
+            let option_count = (opt_vec.len() as u64).min(25);
+            select_menu.min_values(0);
+            select_menu.max_values(option_count);
+
+            select_menu.custom_id("roles_selectmenu");
+            select_menu.options(|options| options.set_options(opt_vec));
+
+            action_row.add_select_menu(select_menu);
+            components.add_action_row(action_row);
+
             resp.interaction_response_data(|msg| {
-                msg.content("This is a select menu example.");
+                msg.set_components(components);
+                msg.ephemeral(true);
                 msg
             });
 
