@@ -1,6 +1,7 @@
 // ref: https://github.com/serenity-rs/poise/blob/develop/examples/framework_usage/main.rs
 
 pub mod commands;
+pub mod event_handlers;
 use std::{collections::HashMap, sync::Mutex};
 
 // Types used by all command functions
