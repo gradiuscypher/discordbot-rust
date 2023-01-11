@@ -6,3 +6,14 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+poise = "0.5.2"
+tokio = { version = "1.21.1", features = ["full"] } # for async in general
+futures-core = { version = "0.3.13", default-features = false } # for async in general
+futures-util = { version = "0.3.13", default-features = false } # for async in general
+once_cell = { version = "1.7.2", default-features = false, features = ["std"] } # to store and set user data
+poise_macros = { version = "0.5.2" } # remember to update the version on changes!
+async-trait = { version = "0.1.48", default-features = false } # various traits
+
+[dependencies.serenity]
+default-features = false
+features = ["builder", "client", "gateway", "model", "utils", "collector"]
